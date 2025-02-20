@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Java App Maker
+Comment=Create Linux desktop entries for Java applications
+Exec=javamaker
+Icon=com.love.javamaker
+Terminal=false
+Type=Application
+Categories=Utility;Application;
