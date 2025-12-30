@@ -169,12 +169,30 @@ Categories=Utility;Application;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Java App Maker"),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                Icons.code,
+                color: Theme.of(context).colorScheme.primary,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text("Java App Maker"),
+          ],
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: IconButton(
-              icon: const Icon(Icons.help_outline),
+              icon: const Icon(Icons.info_outline),
+              tooltip: "About & GitHub",
               onPressed: _openGitHubProfile,
             ),
           ),
@@ -184,90 +202,216 @@ Categories=Utility;Application;
         builder: (context, constraints) {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
-              horizontal: isLargeScreen ? screenWidth * 0.1 : 16,
-              vertical: 16,
+              horizontal: isLargeScreen ? screenWidth * 0.15 : 20,
+              vertical: 24,
             ),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-                maxWidth: isLargeScreen ? 800 : double.infinity,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Application Details
-                  _buildSectionHeader("Application Details"),
-                  const SizedBox(height: 16),
-                  _buildGtkEntry(
-                    controller: _appNameController,
-                    label: "Application Name",
-                    icon: Icons.app_registration,
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Application Components
-                  _buildSectionHeader("Application Components"),
-                  const SizedBox(height: 16),
-                  _buildFileSelector(
-                    label: "JAR File",
-                    value: _jarPath,
-                    icon: Icons.insert_drive_file,
-                    onPressed: () => _pickFile(
-                      extensions: ['jar'],
-                      onSelected: (path) => _jarPath = path,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildFileSelector(
-                    label: "Application Icon",
-                    value: _iconPath,
-                    icon: Icons.image,
-                    onPressed: () => _pickFile(
-                      extensions: ['png', 'jpg', 'jpeg'],
-                      onSelected: (path) => _iconPath = path,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Create Button
-                  Center(
-                    child: SizedBox(
-                      width: isLargeScreen ? screenWidth * 0.5 : double.infinity,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          gradient: isDark
-                              ? null
-                              : const LinearGradient(
-                            colors: [Color(0xFF1a73e8), Color(0xFF669df6)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                  maxWidth: isLargeScreen ? 700 : double.infinity,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Hero Section with Icon
+                    Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: isDark 
+                                  ? [const Color(0xFF3584e4), const Color(0xFF78aeff)]
+                                  : [const Color(0xFF1a73e8), const Color(0xFF669df6)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                                  blurRadius: 20,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.apps,
+                              size: 64,
+                              color: Colors.white,
+                            ),
                           ),
-                          boxShadow: isDark
-                              ? null
-                              : [
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.15),
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            )
-                          ],
+                          const SizedBox(height: 20),
+                          Text(
+                            "Create Desktop Entries",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? Colors.white : Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Transform your Java JAR files into Linux desktop applications",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: isDark ? Colors.white70 : Colors.black54,
+                              height: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Application Details
+                    _buildSectionHeader("Application Details", Icons.tune),
+                    const SizedBox(height: 16),
+                    _buildGtkEntry(
+                      controller: _appNameController,
+                      label: "Application Name",
+                      icon: Icons.app_registration,
+                      hint: "e.g., My Java App",
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Application Components
+                    _buildSectionHeader("Application Components", Icons.folder_open),
+                    const SizedBox(height: 16),
+                    _buildFileSelector(
+                      label: "JAR File",
+                      value: _jarPath,
+                      icon: Icons.insert_drive_file,
+                      description: "Select your Java application JAR file",
+                      onPressed: () => _pickFile(
+                        extensions: ['jar'],
+                        onSelected: (path) => _jarPath = path,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildFileSelector(
+                      label: "Application Icon",
+                      value: _iconPath,
+                      icon: Icons.image,
+                      description: "Choose an icon for your application",
+                      onPressed: () => _pickFile(
+                        extensions: ['png', 'jpg', 'jpeg', 'svg', 'ico'],
+                        onSelected: (path) => _iconPath = path,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Create Button
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        gradient: LinearGradient(
+                          colors: isDark
+                              ? [const Color(0xFF3584e4), const Color(0xFF78aeff)]
+                              : [const Color(0xFF1a73e8), const Color(0xFF669df6)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        child: ElevatedButton(
-                          onPressed: _createDesktopFile,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isDark ? const Color(0xFF3584e4) : null,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
                           ),
-                          child: const Row(
+                        ],
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: _createDesktopFile,
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.rocket_launch, color: Colors.white, size: 24),
+                                SizedBox(width: 12),
+                                Text(
+                                  "Create Desktop Entry",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Info Box
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: isDark 
+                          ? const Color(0xFF383838).withOpacity(0.5)
+                          : Colors.blue.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              "The desktop entry will be created in ~/.local/share/applications/",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: isDark ? Colors.white70 : Colors.black54,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Made with Love Footer
+                    Center(
+                      child: InkWell(
+                        onTap: _openGitHubProfile,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.create_rounded),
-                              SizedBox(width: 12),
-                              Flexible(
-                                child: Text(
-                                  "Create Desktop Entry",
-                                  overflow: TextOverflow.ellipsis,
+                              const Text(
+                                "Made with ",
+                                style: TextStyle(color: Colors.grey, fontSize: 14),
+                              ),
+                              const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 16,
+                              ),
+                              const Text(
+                                " by Jawad Maayah",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  decoration: TextDecoration.underline,
                                 ),
                               ),
                             ],
@@ -275,37 +419,9 @@ Categories=Utility;Application;
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 40),
-
-                  // Made with Love Footer
-                  Center(
-                    child: InkWell(
-                      onTap: _openGitHubProfile,
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            const TextSpan(
-                              text: "Made with ",
-                              style: TextStyle(color: Colors.grey, fontSize: 14),
-                            ),
-                            WidgetSpan(
-                              child: Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 16,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: " by Jawad Maayah",
-                              style: TextStyle(color: Colors.grey, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
           );
