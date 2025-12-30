@@ -505,23 +505,48 @@ Categories=Utility;Application;
     );
   }
 
-  Widget _buildFileSelector({required String label, required String? value, required IconData icon, required VoidCallback onPressed}) {
+  Widget _buildFileSelector({
+    required String label, 
+    required String? value, 
+    required IconData icon, 
+    required VoidCallback onPressed,
+    String? description,
+  }) {
+    final hasValue = value != null;
+    
     return Card(
       elevation: 0,
       color: Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF383838)
           : Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: hasValue 
+            ? Theme.of(context).colorScheme.primary.withOpacity(0.3)
+            : Theme.of(context).colorScheme.primary.withOpacity(0.1),
+          width: hasValue ? 2 : 1,
+        ),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         onTap: onPressed,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
           child: Row(
             children: [
-              Icon(icon, size: 28, color: Theme.of(context).colorScheme.primary),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  icon, 
+                  size: 28, 
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -531,25 +556,48 @@ Categories=Utility;Application;
                       label,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      value ?? "Not selected",
-                      style: TextStyle(
-                        color: value != null
-                            ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
-                            : Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
-                        fontSize: 13,
+                    const SizedBox(height: 6),
+                    if (hasValue)
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            size: 16,
+                            color: Colors.green,
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              value.split('/').last,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                                fontSize: 13,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      Text(
+                        description ?? "Click to select",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                          fontSize: 13,
+                        ),
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, size: 24),
+              Icon(
+                hasValue ? Icons.edit : Icons.upload_file,
+                size: 24,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+              ),
             ],
           ),
         ),
