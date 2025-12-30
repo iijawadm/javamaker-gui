@@ -26,4 +26,4 @@ flutter:
   uses-material-design: true
 flutter_icons:
   linux: true
-  image_path: "/linux/icons/avamaker.png"
+  image_path: "linux/icons/javamaker.png"
