@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   ThemeData _buildTheme(Brightness brightness) {
     final isDark = brightness == Brightness.dark;
     final primaryColor = isDark ? const Color(0xFF78aeff) : const Color(0xFF1a73e8);
-    final scaffoldBackground = isDark ? const Color(0xFF242424) : const Color(0xFFFAFAFA);
+    final scaffoldBackground = isDark ? const Color(0xFF1e1e1e) : const Color(0xFFF5F7FA);
 
     return ThemeData(
       brightness: brightness,
@@ -37,19 +37,25 @@ class MyApp extends StatelessWidget {
       scaffoldBackgroundColor: scaffoldBackground,
       appBarTheme: AppBarTheme(
         elevation: 0,
-        backgroundColor: isDark ? const Color(0xFF303030) : Colors.white,
+        backgroundColor: isDark ? const Color(0xFF2d2d2d) : Colors.white,
         iconTheme: IconThemeData(color: isDark ? Colors.white : Colors.black87),
         titleTextStyle: TextStyle(
           color: isDark ? Colors.white : Colors.black87,
           fontSize: 20,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: isDark ? const Color(0xFF383838) : Colors.white,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
         ),
         contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
@@ -60,7 +66,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
       ),
